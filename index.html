@@ -24,7 +24,7 @@
     <header>
       <div class="container">
           <div class="col-xs-8">
-              <h3>Quora</h3>
+             <h3><a href="/">Quora</a></h3>
           </div>
           {% if user %}
           <div class="col-xs-2">
@@ -47,8 +47,8 @@
           </div>
           <div class="col-xs-2">
             <div class="user-box">
-              <a class="btn btn-block btn-sm" href="{{url}}">
-                <span class="fui-exit"></span>  
+              <a class="login-box" href="{{url}}">
+                <span class="fui-exit"></span> 
                 Login
               </a>
             </div>
@@ -90,7 +90,7 @@
           <div class="question-author col-xs-4"> - Yiran Mao <span class="question-utime">Dec-13 22:08</span></div>
         </div>
       </div>
-      <!-- /.container -->
+      <!-- 
       {% for greeting in greetings %}
         {% if greeting.author %}
           <b>{{ greeting.author.nickname() }}</b> wrote:
@@ -103,7 +103,7 @@
       <form action="/sign?guestbook_name={{ guestbook_name }}" method="post">
         <div><textarea name="content" rows="3" cols="60"></textarea></div>
         <div><input type="submit" value="Sign Guestbook"></div>
-      </form>
+      </form> 
 
       <hr>
 
@@ -111,7 +111,7 @@
         <input value="{{ guestbook_name }}" name="guestbook_name">
         <input type="submit" value="switch">
       </form>
-    </div>
+    </div>-->
 
     <div class="modal fade create-new-question-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
