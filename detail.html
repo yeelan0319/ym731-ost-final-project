@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Quora Application</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Loading Bootstrap -->
+    <link href="/css/vendor/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Loading Flat UI -->
+    <link href="/css/flat-ui.css" rel="stylesheet">
+    <link href="/css/main.css" rel="stylesheet">
+    <link rel="shortcut icon" href="img/favicon.ico">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
+    <!--[if lt IE 9]>
+      <script src="js/vendor/html5shiv.js"></script>
+      <script src="js/vendor/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <header>
+      <div class="container">
+          <div class="col-xs-8">
+              <h3>Quora</h3>
+          </div>
+          {% if user %}
+          <div class="col-xs-2">
+              <button class="btn btn-block btn-sm btn-info" data-toggle="modal" data-target=".create-new-question-modal">
+                <span class="fui-new"></span>
+                Ask a Question
+              </button>
+          </div>
+          <div class="col-xs-2">
+            <div class="user-box">
+              <a class="login-box" href="{{url}}">
+                Logout
+                <span class="fui-exit"></span>  
+              </a>
+              <div class="username-box">{{user}}</div>
+            </div>
+          </div>
+          {% else %}
+          <div class="col-xs-2">
+          </div>
+          <div class="col-xs-2">
+            <div class="user-box">
+              <a class="btn btn-block btn-sm" href="{{url}}">
+                <span class="fui-exit"></span>  
+                Login
+              </a>
+            </div>
+          </div>
+          {% endif %}
+      </div>
+    </header>
+
+    <div class="main-content container">
+      <div class="question-detail">
+        <div class="question-title">
+          <h5>What's up Z!!!!</h5>
+        </div>
+        <table class="question-content">
+          <tr>
+            <td class="question-vote">
+              <span class="fui-triangle-up vote-btn"></span>
+              <span class="question-vote-count">11</span>
+              <span class="fui-triangle-down vote-btn"></span>
+            </td>
+            <td>
+              <div class="question-text">
+              Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus
+              </div>
+              <div class="row question-info">
+                  <div class="col-xs-8">
+                    <span class="question-edit" data-toggle="modal" data-target=".edit-question-modal">Edit</span>
+                    |
+                    <span class="question-delete">Delete</span>
+                  </div>
+                  <div class="question-author col-xs-4"> - Yiran Mao <span class="question-utime">Dec-13 22:08</span></div>
+                </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="answers">
+        <div class="answer-title">
+          <p>3 answers</p>
+        </div>
+        <div class="answer-item">
+          <table class="answer-content">
+            <tr>
+              <td class="answer-vote">
+                <span class="fui-triangle-up vote-btn"></span>
+                <span class="question-vote-count">3</span>
+                <span class="fui-triangle-down vote-btn"></span>
+              </td>
+              <td>
+                <div class="answer-text">
+                Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. 
+                </div>
+                <div class="row answer-info">
+                    <div class="col-xs-8">
+                      <span class="answer-edit" data-toggle="modal" data-target=".edit-answer-modal">Edit</span>
+                      |
+                      <span class="answer-delete">Delete</span>
+                    </div>
+                    <div class="answer-author col-xs-4"> - Yiran Mao <span class="answer-utime">Dec-14 00:08</span></div>
+                  </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="answer-item">
+          <table class="answer-content">
+            <tr>
+              <td class="answer-vote">
+                <span class="fui-triangle-up vote-btn"></span>
+                <span class="question-vote-count">3</span>
+                <span class="fui-triangle-down vote-btn"></span>
+              </td>
+              <td>
+                <div class="answer-text">
+                Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. 
+                </div>
+                <div class="row answer-info">
+                    <div class="col-xs-8">
+                      <span class="answer-edit" data-toggle="modal" data-target=".edit-answer-modal">Edit</span>
+                      |
+                      <span class="answer-delete">Delete</span>
+                    </div>
+                    <div class="answer-author col-xs-4"> - Yiran Mao <span class="answer-utime">Dec-14 00:08</span></div>
+                  </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="answer-item">
+          <table class="answer-content">
+            <tr>
+              <td class="answer-vote">
+                <span class="fui-triangle-up vote-btn"></span>
+                <span class="question-vote-count">3</span>
+                <span class="fui-triangle-down vote-btn"></span>
+              </td>
+              <td>
+                <div class="answer-text">
+                Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. 
+                </div>
+                <div class="row answer-info">
+                    <div class="col-xs-8">
+                      <span class="answer-edit" data-toggle="modal" data-target=".edit-answer-modal">Edit</span>
+                      |
+                      <span class="answer-delete">Delete</span>
+                    </div>
+                    <div class="answer-author col-xs-4"> - Yiran Mao <span class="answer-utime">Dec-14 00:08</span></div>
+                  </div>
+              </td>
+            </tr>
+          </table>
+        </div> 
+      </div><!--answers-->
+      <div class="create-new-answer">
+        <div class="create-answer-title">
+          <p>Your Answer</p>
+        </div>
+        <form action="/sign?guestbook_name=" method="post">
+          <textarea class="form-control" placeholder="Write your thought on it!" name="content" rows="5"></textarea>
+          <div class="row">
+            <div class="col-xs-2">
+              <button class="btn btn-block btn-sm btn-info">Submit</button>
+            </div>
+          </div>
+        </form>
+      </div><!--create-answer-->
+    </div><!-- /.container -->
+    <div class="modal fade create-new-question-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <h4>What's your question?</h4>
+          <input type="text" placeholder="Title" class="form-control" />
+          <textarea class="form-control" rows="5" placeholder="Write detail description about your question..."></textarea>
+          <div class="row">
+            <div class="attachments col-xs-10">
+              <span class="fui-clip"></span>
+            </div>
+            <div class="col-xs-2">
+              <button class="btn btn-block btn-sm btn-info">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade edit-question-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <h4>Edit Question</h4>
+          <input type="text" placeholder="Title" class="form-control" />
+          <textarea class="form-control" rows="5" placeholder="Write detail description about your question..."></textarea>
+          <div class="row">
+            <div class="attachments col-xs-10">
+              <span class="fui-clip"></span>
+            </div>
+            <div class="col-xs-2">
+              <button class="btn btn-block btn-sm btn-info">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade edit-answer-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <h4>Edit Answer</h4>
+          <textarea class="form-control" rows="5" placeholder="Write detail description about your question..."></textarea>
+          <div class="row">
+            <div class="attachments col-xs-10">
+            </div>
+            <div class="col-xs-2">
+              <button class="btn btn-block btn-sm btn-info">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- jQuery (necessary for Flat UI's JavaScript plugins) -->
+    <script src="/js/vendor/jquery.min.js"></script>
+    <script src="/js/detail.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/js/vendor/video.js"></script>
+    <script src="/js/flat-ui.min.js"></script>
+
+  </body>
+</html>
+{% endautoescape %}

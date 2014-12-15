@@ -1,6 +1,7 @@
 body{
 	background: #E0F1FA;
 	font-size: 14px;
+	cursor: default;
 }
 
 header{
@@ -40,14 +41,14 @@ header .username-box, header .login-box{
 	padding: 30px;
 }
 
-.create-new-question-modal input, .create-new-question-modal textarea{
+.create-new-question-modal input, .create-new-question-modal textarea, .create-new-answer textarea, .edit-answer-modal textarea, .edit-question-modal textarea, .edit-question-modal input{
 	margin-bottom: 15px;
 	resize: none;
 }
 
 .main-content{
 	position: relative;
-	top:80px;
+	top:65px;
 }
 
 .main-content a{
@@ -59,7 +60,7 @@ header .username-box, header .login-box{
 
 .question-item{
 	margin-bottom: 30px;
-	padding: 0px 20px;
+	padding: 20px;
 	cursor: pointer;
 	-webkit-transition: all 0.75s; /* For Safari 3.1 to 6.0 */
     transition: all 0.75s;
@@ -86,37 +87,39 @@ header .username-box, header .login-box{
 }
 
 
-.question-detail{
-	margin-bottom: 30px;
-	padding: 0px 20px;
-    border: 1px solid transparent;
-    margin-bottom: 50px;
+.question-detail, .answers, .create-new-answer{
+	padding: 15px;
 }
-.question-detail .question-title{
+.answers .answer-item{
+	padding: 10px 0px;
+}
+.question-detail .question-title, .answers .answer-title, .answers .answer-item{
 	border-bottom: 1px solid #ccc;
-	margin-bottom: 20px;
 }
 
-.question-detail .question-vote{
+.question-detail .question-vote, .answer-item .answer-vote{
 	width: 60px;
 	text-align: center;
 	vertical-align: top;
 }
-.question-detail .question-vote span{
+.question-detail .question-vote span, .answer-item .answer-vote span{
 	display: block;
 	font-size: 20px;
 }
-.question-detail .question-vote .vote-btn{
+.question-detail .question-vote .vote-btn, .answer-item .answer-vote .vote-btn, .question-item .question-edit, .question-item .question-delete, .question-detail .question-edit, .question-detail .question-delete, .answer-item .answer-edit, .answer-item .answer-delete{
 	cursor:pointer;
 }
-.question-detail .question-info{
+.question-detail .question-content{
+	margin: 20px 0px;
+}
+.question-detail .question-info, .answer-item .answer-info{
 	margin-top: 20px;
 	color: #777;
 	font-size: 12px;
 }
-.question-detail .question-author{
+.question-detail .question-author, .answer-item .answer-author{
 	text-align: right
 }
-.question-detail .question-utime{
+.question-detail .question-utime, .answer-item .answer-utime{
 	padding-left: 1em;
 }
