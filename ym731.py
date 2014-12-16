@@ -13,43 +13,21 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
-DEFAULT_GUESTBOOK_NAME = 'default_guestbook'
+class Answer(ndb.Model):
+    author = ndb.UserProperty(required=True)
+    content = ndb.StringProperty(indexed=False, required=True)
+    vote = ndb.IntegerProperty(default=0)
+    ctime = ndb.DateTimeProperty(auto_now_add=True) #creation time
+    utime = ndb.DateTimeProperty(auto_now=True) #update time
 
-# We set a parent key on the 'Greetings' to ensure that they are all in the same
-# entity group. Queries across the single entity group will be consistent.
-# However, the write rate should be limited to ~1/second.
-
-def guestbook_key(guestbook_name=DEFAULT_GUESTBOOK_NAME):
-    """Constructs a Datastore key for a Guestbook entity with guestbook_name."""
-    return ndb.Key('Guestbook', guestbook_name)
-
-class Greeting(ndb.Model):
-    """Models an individual Guestbook entry."""
-    author = ndb.UserProperty()
-    content = ndb.StringProperty(indexed=False)
-    date = ndb.DateTimeProperty(auto_now_add=True)
-
-class Question(object):
-    """__init__() functions as the class constructor"""
-    def __init__(self, qid=None, title=None, content=None, answerno=None, author=None, utime=None, answers=None, vote=0):
-        self.qid = qid
-        self.title = title
-        self.content = content
-        self.answerno = answerno
-        self.author = author
-        self.utime = utime
-        self.answers = answers
-        self.vote = vote
-
-class Answer(object):
-    """__init__() functions as the class constructor"""
-    def __init__(self, aid=None, qid=None, content=None, author=None, utime=None, vote=0):
-        self.aid = aid
-        self.qid = qid
-        self.content = content
-        self.author = author
-        self.utime = utime
-        self.vote = vote
+class Question(ndb.Model):
+    author = ndb.UserProperty(required=True)
+    title = ndb.StringProperty(indexed=False, required=True)
+    content = ndb.StringProperty(indexed=False, required=True)
+    vote = ndb.IntegerProperty(default=0)
+    ctime = ndb.DateTimeProperty(auto_now_add=True) #creation time
+    utime = ndb.DateTimeProperty(auto_now=True) #update time
+    answers = ndb.StructuredProperty(Answer, repeated=True)
 
 class MainPage(webapp2.RequestHandler):
 
@@ -103,27 +81,54 @@ class DetailPage(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template('detail.html')
         self.response.write(template.render(template_values))
 
-class Guestbook(webapp2.RequestHandler):
-    def post(self):
-        # We set the same parent key on the 'Greeting' to ensure each Greeting
-        # is in the same entity group. Queries across the single entity group
-        # will be consistent. However, the write rate to a single entity group
-        # should be limited to ~1/second.
-        guestbook_name = self.request.get('guestbook_name',
-                                          DEFAULT_GUESTBOOK_NAME)
-        greeting = Greeting(parent=guestbook_key(guestbook_name))
+# class QuestionHandler(webapp2.RequestHandler):
+#     def post(self):
 
-        if users.get_current_user():
-            greeting.author = users.get_current_user()
+#         # We set the same parent key on the 'Greeting' to ensure each Greeting
+#         # is in the same entity group. Queries across the single entity group
+#         # will be consistent. However, the write rate to a single entity group
+#         # should be limited to ~1/second.
+#         guestbook_name = self.request.get('guestbook_name',
+#                                           DEFAULT_GUESTBOOK_NAME)
+#         greeting = Greeting(parent=guestbook_key(guestbook_name))
 
-        greeting.content = self.request.get('content')
-        greeting.put()
+#         if users.get_current_user():
+#             greeting.author = users.get_current_user()
 
-        query_params = {'guestbook_name': guestbook_name}
-        self.redirect('/?' + urllib.urlencode(query_params))
+#         greeting.content = self.request.get('content')
+#         greeting.put()
+
+#         query_params = {'guestbook_name': guestbook_name}
+#         self.redirect('/?' + urllib.urlencode(query_params))
+#     def get(self):
+#         qid = self.request.get('qid')
+
+class ListHandler(webapp2.RequestHandler):
+    def get(self):  #fetch all questions
+        self.response.headers['Content-Type'] = 'text/plain'
+        self.response.write('Hello, World!')
+#     def post(self): #create new question
+
+class QuestionHandler(webapp2.RequestHandler):
+    def get(self, qid):  #fetch single question
+        self.response.write('This is the ProductHandler. '
+            'The product id is %s' % qid)
+#     def post(self, qid):  #vote single question
+#     def put(self, qid):   #edit single question
+#     def delete(self, qid):   #delete single question
+
+class AnswerHandler(webapp2.RequestHandler):
+    def get(self, qid, aid):
+        self.response.write('This is the ProductHandler. '
+            'The product id is %s' % aid)
+#     def post(self, qid, aid): #vote for answer
+#     def put(self, qid, aid):  #edit answer
+#     def delete(self, qid, aid):  #delete answer
+
 
 application = webapp2.WSGIApplication([
-    ('/', MainPage),
-    ('/detail', DetailPage),
-    ('/sign', Guestbook),
+    (r'/', ListHandler),
+    (r'/questions', ListHandler),
+    (r'/questions/(\d+)', QuestionHandler),
+    (r'/questions/(\d+)/answers/(\d+)', AnswerHandler),
 ], debug=True)
