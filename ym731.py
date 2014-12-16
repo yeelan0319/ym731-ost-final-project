@@ -29,14 +29,42 @@ class Greeting(ndb.Model):
     content = ndb.StringProperty(indexed=False)
     date = ndb.DateTimeProperty(auto_now_add=True)
 
+class Question(object):
+    """__init__() functions as the class constructor"""
+    def __init__(self, qid=None, title=None, content=None, answerno=None, author=None, utime=None, answers=None, vote=0):
+        self.qid = qid
+        self.title = title
+        self.content = content
+        self.answerno = answerno
+        self.author = author
+        self.utime = utime
+        self.answers = answers
+        self.vote = vote
+
+class Answer(object):
+    """__init__() functions as the class constructor"""
+    def __init__(self, aid=None, qid=None, content=None, author=None, utime=None, vote=0):
+        self.aid = aid
+        self.qid = qid
+        self.content = content
+        self.author = author
+        self.utime = utime
+        self.vote = vote
+
 class MainPage(webapp2.RequestHandler):
 
     def get(self):
-        guestbook_name = self.request.get('guestbook_name',
-                                          DEFAULT_GUESTBOOK_NAME)
-        greetings_query = Greeting.query(
-            ancestor=guestbook_key(guestbook_name)).order(-Greeting.date)
-        greetings = greetings_query.fetch(10)
+        # guestbook_name = self.request.get('guestbook_name',
+        #                                   DEFAULT_GUESTBOOK_NAME)
+        # greetings_query = Greeting.query(
+        #     ancestor=guestbook_key(guestbook_name)).order(-Greeting.date)
+        # greetings = greetings_query.fetch(10)
+
+        questions = []
+        questions.append(Question(1, "What's up Z!!!!","Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat ", 8, "Yiran Mao", "Dec-15 22:26"));
+        questions.append(Question(2, "What's up Z!!!!","Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat ", 11, "Zihang Li", "Dec-15 22:33"));
+        questions[0].contentpreview = questions[0].content
+        questions[1].contentpreview = questions[1].content
 
         if users.get_current_user():
             url = users.create_logout_url(self.request.uri)
@@ -44,8 +72,7 @@ class MainPage(webapp2.RequestHandler):
             url = users.create_login_url(self.request.uri)
 
         template_values = {
-            'greetings': greetings,
-            'guestbook_name': urllib.quote_plus(guestbook_name),
+            'questions': questions,
             'user': users.get_current_user(),
             'url': url,
         }
@@ -56,12 +83,19 @@ class MainPage(webapp2.RequestHandler):
 class DetailPage(webapp2.RequestHandler):
 
     def get(self):
+        answers = []
+        answers.append(Answer(1, 1, "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat ", "Yiran Mao", "Dec-15 22:26"));
+        answers.append(Answer(2, 1, "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat ", "Zihang Li", "Dec-15 22:33"));
+        
+        question = Question(1, "What's up Z!!!!","Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat ", 8, "Yiran Mao", "Dec-15 22:26", answers);
+        
         if users.get_current_user():
             url = users.create_logout_url(self.request.uri)
         else:
             url = users.create_login_url(self.request.uri)
 
         template_values = {
+            'question': question,
             'user': users.get_current_user(),
             'url': url,
         }

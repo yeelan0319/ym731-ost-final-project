@@ -28,7 +28,7 @@
           </div>
           {% if user %}
           <div class="col-xs-2">
-              <button class="btn btn-block btn-sm btn-info" data-toggle="modal" data-target=".create-new-question-modal">
+              <button class="btn btn-block btn-sm btn-info" data-toggle="modal" data-target="#create-new-question-modal">
                 <span class="fui-new"></span>
                 Ask a Question
               </button>
@@ -58,62 +58,27 @@
     </header>
 
     <div class="main-content container">
-      <a href="/detail?qid=xxxx">
+    {% for question in questions %}
+      <a href="/detail?qid={{ question.qid }}">
         <div class="question-item">
           <div class="question-title">
-            <h5>What's up Z!!!!</h5>
+            <h5>{{ question.title }}</h5>
           </div>
           <div class="question-content-preview">
-            Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus
+            {{ question.contentpreview }}
           </div>
           <div class="row question-info">
             <div class="col-xs-8">
               <span class="fui-bubble"></span>
-              <span class="question-answer">8 Answers</span>
+              <span class="question-answer">{{ question.answerno }} Answers</span>
             </div>
-            <div class="question-author col-xs-4"> - Yiran Mao <span class="question-utime">Dec-13 22:08</span></div>
+            <div class="question-author col-xs-4"> - {{ question.author }} <span class="question-utime">{{ question.utime }}</span></div>
           </div>
         </div>
       </a>
-      <div class="question-item">
-        <div class="question-title">
-          <h5>What's up Z!!!!</h5>
-        </div>
-        <div class="question-content-preview">
-          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus
-        </div>
-        <div class="row question-info">
-          <div class="col-xs-8">
-            <span class="fui-bubble"></span>
-            <span class="question-answer">8 Answers</span>
-          </div>
-          <div class="question-author col-xs-4"> - Yiran Mao <span class="question-utime">Dec-13 22:08</span></div>
-        </div>
-      </div>
-      <!-- 
-      {% for greeting in greetings %}
-        {% if greeting.author %}
-          <b>{{ greeting.author.nickname() }}</b> wrote:
-        {% else %}
-         An anonymous person wrote:
-        {% endif %}
-        <blockquote>{{ greeting.content }}</blockquote>
-      {% endfor %}
-
-      <form action="/sign?guestbook_name={{ guestbook_name }}" method="post">
-        <div><textarea name="content" rows="3" cols="60"></textarea></div>
-        <div><input type="submit" value="Sign Guestbook"></div>
-      </form> 
-
-      <hr>
-
-      <form>Guestbook name:
-        <input value="{{ guestbook_name }}" name="guestbook_name">
-        <input type="submit" value="switch">
-      </form>
-    </div>-->
-
-    <div class="modal fade create-new-question-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    {% endfor %}
+    </div>
+    <div class="modal fade" id="create-new-question-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <h4>What's your question?</h4>
@@ -130,6 +95,12 @@
         </div>
       </div>
     </div>
+    <footer>
+      <div class="container">
+        <span>Yiran Mao - Copyright@2014</span>
+        <a class="gh-btn" id="gh-btn" href="https://github.com/yeelan0319/ym731-ost-final-project" target="_blank"><span class="fui-github"></span> <span class="gh-text" id="gh-text">View on Github</span></a>
+      </div>
+    </footer>
     <!-- jQuery (necessary for Flat UI's JavaScript plugins) -->
     <script src="/js/vendor/jquery.min.js"></script>
     <script src="/js/main.js"></script>

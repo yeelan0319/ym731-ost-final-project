@@ -30,7 +30,8 @@ header .btn{
 
 header .user-box{
 	margin-top: 15px;
-	padding: 7px 13px;
+	padding: 9px 13px;
+	line-height: normal;
 }
 
 header .username-box, header .login-box{
@@ -41,11 +42,43 @@ header .username-box, header .login-box{
 	color: #333;
 }
 
+footer{
+	position: relative;
+	top: 100px;
+	padding: 10px;
+	font-size: 11px;
+	text-align: center;
+	background: #7F8C8D;
+	z-index: 1000;
+	coloe: #fff;
+}
+
+footer .gh-btn{
+	background-color: #e6e6e6;
+	background-image: -webkit-gradient(linear,0 0,0 100%,from(#fafafa),to(#eaeaea));
+	background-image: -webkit-linear-gradient(#fafafa,#eaeaea);
+	background-image: -moz-linear-gradient(top,#fafafa,#eaeaea);
+	background-image: -ms-linear-gradient(#fafafa,#eaeaea);
+	background-image: -o-linear-gradient(#fafafa,#eaeaea);
+	background-image: linear-gradient(#fafafa,#eaeaea);
+	background-repeat: no-repeat;
+	border: 1px solid #d4d4d4;
+	border-bottom-color: #bcbcbc;
+	padding: 2px 5px 2px 4px;
+	margin-left: 10px;
+	color: #333;
+	text-decoration: none;
+	text-shadow: 0 1px 0 #fff;
+	white-space: nowrap;
+	cursor: pointer;
+	border-radius: 3px;
+}
+
 .modal-content{
 	padding: 30px;
 }
 
-.create-new-question-modal input, .create-new-question-modal textarea, .create-new-answer textarea, .edit-answer-modal textarea, .edit-question-modal textarea, .edit-question-modal input{
+#create-new-question-modal input, #create-new-question-modal textarea, #create-new-answer textarea, #edit-answer-modal textarea, #edit-question-modal textarea, #edit-question-modal input{
 	margin-bottom: 15px;
 	resize: none;
 }
@@ -124,6 +157,6 @@ header .username-box, header .login-box{
 .question-detail .question-author, .answer-item .answer-author{
 	text-align: right
 }
-.question-detail .question-utime, .answer-item .answer-utime{
+.question-detail .question-utime, .answer-item .answer-utime, .question-detail .question-ctime, .answer-item .answer-ctime{
 	padding-left: 1em;
 }
