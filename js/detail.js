@@ -64,6 +64,7 @@ $(document).ready(function(){
 		
 		if(title && content){
 			var data = {
+				type: "content",
 				content: content,
 				title: title
 			}
@@ -198,4 +199,23 @@ $(document).ready(function(){
 			}
 		});
 	});
+
+	// tags management
+	var taginput = $('.question-tagsinput');
+	taginput.tagsinput();
+	taginput.on('itemAdded itemRemoved', function(event) {
+		var qid = $(this).data('content');
+		var data = {
+			type: "tag",
+			tag: $('.question-tagsinput').val()
+		}
+		$.ajax({
+			type: "PUT",
+			url: "/questions/" + qid,
+			data: data
+		});
+	});
+	// $('.bootstrap-tagsinput input').before('<span class="tag label label-add">+</span>').find('.label-add').click(function(){
+	// 	taginput.tagsinput('focus');
+	// });
 }) 

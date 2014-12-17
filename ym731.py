@@ -22,6 +22,7 @@ class Question(ndb.Model):
     vote = ndb.IntegerProperty(default=0)
     ctime = ndb.DateTimeProperty(auto_now_add=True) #creation time
     utime = ndb.DateTimeProperty(auto_now=True) #update time
+    tags = ndb.JsonProperty()
 
 class Answer(ndb.Model):
     questionKey = ndb.KeyProperty(kind=Question)
@@ -111,8 +112,13 @@ class QuestionHandler(webapp2.RequestHandler):
         }));
     def put(self, qid):   #edit single question
         question = ndb.Key(urlsafe=qid).get()
-        question.title = self.request.get('title')
-        question.content = self.request.get('content')
+        editType = self.request.get("type")
+        if editType == "tag":
+            question.tags = self.request.get("tag")
+        elif editType == "content":
+            question.title = self.request.get('title')
+            question.content = self.request.get('content')
+        
         question.put()
 
         self.response.out.write(json.dumps({

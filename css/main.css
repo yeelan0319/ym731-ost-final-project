@@ -169,3 +169,22 @@ footer .gh-btn{
 .question-detail .question-utime, .answer-item .answer-utime, .question-detail .question-ctime, .answer-item .answer-ctime{
 	padding-left: 1em;
 }
+.bootstrap-tagsinput{
+	background-color: transparent;
+	padding: 15px 1px 1px 15px;
+ 	margin-bottom: 0px;
+ 	border: none;
+}
+.bootstrap-tagsinput .tag{
+	background-color: #fff;
+}
+.bootstrap-tagsinput .tag:hover{
+	background-color: #3498db;
+}
+.bootstrap-tagsinput .label-add{
+	padding: 6px 15px;
+}
+.bootstrap-tagsinput .label-add:hover{
+	padding: 6px 15px;
+	background-color: #3498db;
+}

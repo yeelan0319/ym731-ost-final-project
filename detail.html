@@ -81,6 +81,9 @@
                   </div>
                   <div class="question-author col-xs-4"> - {{ question.author }} <span class="question-utime">{{ question.utime.strftime('%Y-%m-%d %H:%M') }}</span></div>
                 </div>
+              <div class="row question-tag">
+                <input name="tagsinput" class="question-tagsinput" data-role="tagsinput" data-content="{{ question.key.urlsafe() }}" value="{{ question.tags or "" }}" />
+              </div>
             </td>
           </tr>
         </table>
@@ -196,7 +199,7 @@
     <script src="/js/detail.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="/js/vendor/video.js"></script>
-    <script src="/js/flat-ui.min.js"></script>
+    <script src="/js/flat-ui.js"></script>
 
   </body>
 </html>
