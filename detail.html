@@ -71,7 +71,7 @@
             </td>
             <td>
               <div class="question-text">
-              {{ question.content }}
+              {{ question.content | safe }}
               </div>
               <div class="row question-info">
                   <div class="col-xs-8">
@@ -103,7 +103,7 @@
               </td>
               <td>
                 <div class="answer-text">
-                {{ answer.content }}
+                {{ answer.content | safe }}
                 </div>
                 <div class="row answer-info">
                     <div class="col-xs-8">

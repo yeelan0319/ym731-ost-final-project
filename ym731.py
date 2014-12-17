@@ -8,12 +8,19 @@ from google.appengine.datastore.datastore_query import Cursor
 import jinja2
 import webapp2
 import json
+import re
 
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
+
+def contentParser(content):
+    content = re.sub(r'(http[s]?://)([^\s]*)','<a target="_blank" href="\\1\\2">\\1\\2</a>',content)
+    content = re.sub(r'<a href="(http[s]?://[^\s]*[(.jpg)(.png)(.gif)])">.*</a>', '<img src="\\1" height="300">', content)
+    content = content.replace('\n', '<br/>')
+    return content
 
 class Question(ndb.Model):
     author = ndb.UserProperty(required=True)
@@ -86,7 +93,12 @@ class QuestionHandler(webapp2.RequestHandler):
 
         questionKey = ndb.Key(urlsafe=qid)
         question = questionKey.get()
-        question.answers = Answer.query(Answer.questionKey == questionKey).order(-Answer.vote)
+        question.content = contentParser(question.content)
+
+        answers = Answer.query(Answer.questionKey == questionKey).order(-Answer.vote)
+        for answer in answers :
+            answer.content = contentParser(answer.content)
+        question.answers = answers
 
         template_values = {
             'user': users.get_current_user(),
@@ -124,6 +136,7 @@ class QuestionHandler(webapp2.RequestHandler):
         self.response.out.write(json.dumps({
             'status': 200,
             'data': {
+                'content': contentParser(question.content)
             }
         }));
     def delete(self, qid):   #delete single question
@@ -144,6 +157,7 @@ class AnswersHandler(webapp2.RequestHandler):
         );
         answer.put()
 
+        answer.content = contentParser(answer.content)
         template_values = {
             'questionKey': questionKey,
             'answer': answer
@@ -180,6 +194,7 @@ class AnswerHandler(webapp2.RequestHandler):
         self.response.out.write(json.dumps({
             'status': 200,
             'data': {
+                'content': contentParser(answer.content)
             }
         }));
     def delete(self, qid, aid):  #delete answer

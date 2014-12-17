@@ -77,7 +77,7 @@ $(document).ready(function(){
 					if(data.status == 200){  //which means it success
 						var questionEl = $("#question-" + qid);
 					  	questionEl.find(".question-title h5").text(title);
-					  	questionEl.find(".question-text").text(content);
+					  	questionEl.find(".question-text").html(data.data.content);
 					  	modal.modal('hide');
 					}	
 				}
@@ -103,7 +103,7 @@ $(document).ready(function(){
 					data = JSON.parse(data);
 					if(data.status == 200){  //which means it success
 						var answerEl = $("#answer-" + aid);
-					  	answerEl.find(".answer-text").text(content);
+					  	answerEl.find(".answer-text").html(data.data.content);
 					  	modal.modal('hide');
 					}	
 				}
@@ -215,7 +215,4 @@ $(document).ready(function(){
 			data: data
 		});
 	});
-	// $('.bootstrap-tagsinput input').before('<span class="tag label label-add">+</span>').find('.label-add').click(function(){
-	// 	taginput.tagsinput('focus');
-	// });
 }) 
