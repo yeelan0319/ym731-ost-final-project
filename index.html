@@ -58,38 +58,21 @@
     </header>
 
     <div class="main-content container">
-    {% for question in questions %}
-      <a href="/detail?qid={{ question.qid }}">
-        <div class="question-item">
-          <div class="question-title">
-            <h5>{{ question.title }}</h5>
-          </div>
-          <div class="question-content-preview">
-            {{ question.contentpreview }}
-          </div>
-          <div class="row question-info">
-            <div class="col-xs-8">
-              <span class="fui-bubble"></span>
-              <span class="question-answer">{{ question.answerno }} Answers</span>
-            </div>
-            <div class="question-author col-xs-4"> - {{ question.author }} <span class="question-utime">{{ question.utime }}</span></div>
-          </div>
-        </div>
-      </a>
-    {% endfor %}
     </div>
     <div class="modal fade" id="create-new-question-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
-          <h4>What's your question?</h4>
-          <input type="text" placeholder="Title" class="form-control" />
-          <textarea class="form-control" rows="5" placeholder="Write detail description about your question..."></textarea>
-          <div class="row">
-            <div class="attachments col-xs-10">
-              <span class="fui-clip"></span>
-            </div>
-            <div class="col-xs-2">
-              <button class="btn btn-block btn-sm btn-info">Submit</button>
+          <div class="form-view">
+            <h4>What's your question?</h4>
+            <input type="text" placeholder="Title" class="form-control" />
+            <textarea class="form-control" rows="5" placeholder="Write detail description about your question..."></textarea>
+            <div class="row">
+              <div class="attachments col-xs-10">
+                <span class="fui-clip"></span>
+              </div>
+              <div class="col-xs-2">
+                <button class="btn btn-block btn-sm btn-info">Submit</button>
+              </div>
             </div>
           </div>
         </div>

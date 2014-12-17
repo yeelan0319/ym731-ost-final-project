@@ -1,0 +1,17 @@
+{% for question in questions %}
+  <a href="/questions/{{ question.key.urlsafe() }}">
+    <div class="question-item">
+      <div class="question-title">
+        <h5>{{ question.title }}</h5>
+      </div>
+      <div class="question-content-preview">
+        {{ question.content | safe | truncate(500) }}
+      </div>
+      <div class="row question-info">
+        <div class="col-xs-8">
+        </div>
+        <div class="question-author col-xs-4"> - {{ question.author }} <span class="question-utime">{{ question.utime.strftime('%Y-%m-%d %H:%M') }}</span></div>
+      </div>
+    </div>
+  </a>
+{% endfor %}

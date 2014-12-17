@@ -58,16 +58,16 @@
     </header>
 
     <div class="main-content container">
-      <div class="question-detail" id="question-{{ question.qid }}">
+      <div class="question-detail" id="question-{{ question.key.urlsafe() }}">
         <div class="question-title">
           <h5>{{ question.title }}</h5>
         </div>
         <table class="question-content">
           <tr>
             <td class="question-vote">
-              <span class="fui-triangle-up vote-btn question-vote-up-btn" data-content="{{ question.qid }}"></span>
+              <span class="fui-triangle-up vote-btn question-vote-up-btn" data-content="{{ question.key.urlsafe() }}"></span>
               <span class="question-vote-count">{{ question.vote }}</span>
-              <span class="fui-triangle-down vote-btn question-vote-down-btn" data-content="{{ question.qid }}"></span>
+              <span class="fui-triangle-down vote-btn question-vote-down-btn" data-content="{{ question.key.urlsafe() }}"></span>
             </td>
             <td>
               <div class="question-text">
@@ -75,11 +75,11 @@
               </div>
               <div class="row question-info">
                   <div class="col-xs-8">
-                    <span class="question-edit" data-toggle="modal" data-target="#edit-question-modal" data-content="{{ question.qid }}">Edit</span>
+                    <span class="question-edit" data-toggle="modal" data-target="#edit-question-modal" data-content="{{ question.key.urlsafe() }}">Edit</span>
                     |
-                    <span class="question-delete" data-content="{{ question.qid }}">Delete</span>
+                    <span class="question-delete" data-content="{{ question.key.urlsafe() }}">Delete</span>
                   </div>
-                  <div class="question-author col-xs-4"> - {{ question.author }} <span class="question-utime">{{ question.utime }}</span></div>
+                  <div class="question-author col-xs-4"> - {{ question.author }} <span class="question-utime">{{ question.utime.strftime('%Y-%m-%d %H:%M') }}</span></div>
                 </div>
             </td>
           </tr>
@@ -87,16 +87,16 @@
       </div>
       <div class="answers">
         <div class="answer-title">
-          <p>{{ question.answerno }} answers</p>
+          <p>{{ question.answers.count() or 0 }} Answers</p>
         </div>
         {% for answer in question.answers %}
-        <div class="answer-item" id="answer-{{ answer.aid }}">
+        <div class="answer-item" id="answer-{{ answer.key.urlsafe() }}">
           <table class="answer-content">
             <tr>
               <td class="answer-vote">
-                <span class="fui-triangle-up vote-btn answer-vote-up-btn" data-content="{{ answer.aid }}"></span>
+                <span class="fui-triangle-up vote-btn answer-vote-up-btn" data-content="{{ question.key.urlsafe() }},{{ answer.key.urlsafe() }}"></span>
                 <span class="question-vote-count">{{ answer.vote }}</span>
-                <span class="fui-triangle-down vote-btn answer-vote-down-btn" data-content="{{ answer.aid }}"></span>
+                <span class="fui-triangle-down vote-btn answer-vote-down-btn" data-content="{{ question.key.urlsafe() }},{{ answer.key.urlsafe() }}"></span>
               </td>
               <td>
                 <div class="answer-text">
@@ -104,11 +104,11 @@
                 </div>
                 <div class="row answer-info">
                     <div class="col-xs-8">
-                      <span class="answer-edit" data-toggle="modal" data-target="#edit-answer-modal" data-content="{{ answer.aid }}">Edit</span>
+                      <span class="answer-edit" data-toggle="modal" data-target="#edit-answer-modal" data-content="{{ question.key.urlsafe() }},{{ answer.key.urlsafe() }}">Edit</span>
                       |
-                      <span class="answer-delete" data-content="{{ answer.aid }}">Delete</span>
+                      <span class="answer-delete" data-content="{{ question.key.urlsafe() }},{{ answer.key.urlsafe() }}">Delete</span>
                     </div>
-                    <div class="answer-author col-xs-4"> - {{ answer.author }} <span class="answer-utime">{{ answer.utime }}</span></div>
+                    <div class="answer-author col-xs-4"> - {{ answer.author }} <span class="answer-utime">{{ answer.utime.strftime('%Y-%m-%d %H:%M') }}</span></div>
                   </div>
               </td>
             </tr>
@@ -123,7 +123,7 @@
         <textarea class="form-control" placeholder="Write your thought on it!" name="content" rows="5"></textarea>
         <div class="row">
           <div class="col-xs-2">
-            <button class="btn btn-block btn-sm btn-info" data-content="{{ question.qid }}">Submit</button>
+            <button class="btn btn-block btn-sm btn-info" data-content="{{ question.key.urlsafe() }}">Submit</button>
           </div>
         </div>
       </div><!--create-answer-->
@@ -131,16 +131,24 @@
     <div class="modal fade" id="create-new-question-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
-          <h4>What's your question?</h4>
-          <input type="text" placeholder="Title" class="form-control" />
-          <textarea class="form-control" rows="5" placeholder="Write detail description about your question..."></textarea>
-          <div class="row">
-            <div class="attachments col-xs-10">
-              <span class="fui-clip"></span>
+          <div class="form-view">
+            <h4>What's your question?</h4>
+            <input type="text" placeholder="Title" class="form-control" />
+            <textarea class="form-control" rows="5" placeholder="Write detail description about your question..."></textarea>
+            <div class="row">
+              <div class="attachments col-xs-10">
+                <span class="fui-clip"></span>
+              </div>
+              <div class="col-xs-2">
+                <button class="btn btn-block btn-sm btn-info">Submit</button>
+              </div>
             </div>
-            <div class="col-xs-2">
-              <button class="btn btn-block btn-sm btn-info">Submit</button>
-            </div>
+          </div>
+          <div class="result-view hide">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4>Success!</h4>
+            <span>view question</span>
+            <a href="#"></a>
           </div>
         </div>
       </div>

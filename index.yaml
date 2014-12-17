@@ -10,6 +10,12 @@ indexes:
 # automatically uploaded to the admin console when you next deploy
 # your application using appcfg.py.
 
+- kind: Answer
+  properties:
+  - name: questionKey
+  - name: vote
+    direction: desc
+
 - kind: Greeting
   ancestor: yes
   properties:

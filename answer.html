@@ -1,0 +1,24 @@
+<div class="answer-item" id="answer-{{ answer.key.urlsafe() }}">
+  <table class="answer-content">
+    <tr>
+      <td class="answer-vote">
+        <span class="fui-triangle-up vote-btn answer-vote-up-btn" data-content="{{ questionKey.urlsafe() }},{{ answer.key.urlsafe() }}"></span>
+        <span class="question-vote-count">{{ answer.vote }}</span>
+        <span class="fui-triangle-down vote-btn answer-vote-down-btn" data-content="{{ questionKey.urlsafe() }},{{ answer.key.urlsafe() }}"></span>
+      </td>
+      <td>
+        <div class="answer-text">
+        {{ answer.content }}
+        </div>
+        <div class="row answer-info">
+            <div class="col-xs-8">
+              <span class="answer-edit" data-toggle="modal" data-target="#edit-answer-modal" data-content="{{ questionKey.urlsafe() }},{{ answer.key.urlsafe() }}">Edit</span>
+              |
+              <span class="answer-delete" data-content="{{ questionKey.urlsafe() }},{{ answer.key.urlsafe() }}">Delete</span>
+            </div>
+            <div class="answer-author col-xs-4"> - {{ answer.author }} <span class="answer-utime">{{ answer.utime.strftime('%Y-%m-%d %H:%M') }}</span></div>
+          </div>
+      </td>
+    </tr>
+  </table>
+</div>

@@ -2,6 +2,13 @@ body{
 	background: #E0F1FA;
 	font-size: 14px;
 	cursor: default;
+	-webkit-user-select: none;  /* Chrome all / Safari all */
+	-moz-user-select: none;     /* Firefox all */
+	-ms-user-select: none;      /* IE 10+ */
+
+	/* No support for these yet, use at own risk */
+	-o-user-select: none;
+	user-select: none;
 }
 
 a, a:hover{
@@ -21,6 +28,10 @@ header{
 
 header h3{
 	margin: 10px 0px;
+}
+
+.hide{
+	display:none;
 }
 
 header .btn{
@@ -124,11 +135,8 @@ footer .gh-btn{
 }
 
 
-.question-detail, .answers, .create-new-answer{
+.question-detail, .answers, #create-new-answer{
 	padding: 15px;
-}
-.answers .answer-item{
-	padding: 10px 0px;
 }
 .question-detail .question-title, .answers .answer-title, .answers .answer-item{
 	border-bottom: 1px solid #ccc;
@@ -146,8 +154,9 @@ footer .gh-btn{
 .question-detail .question-vote .vote-btn, .answer-item .answer-vote .vote-btn, .question-item .question-edit, .question-item .question-delete, .question-detail .question-edit, .question-detail .question-delete, .answer-item .answer-edit, .answer-item .answer-delete{
 	cursor:pointer;
 }
-.question-detail .question-content{
+.question-detail .question-content, .answer-item .answer-content{
 	margin: 20px 0px;
+	width: 100%;
 }
 .question-detail .question-info, .answer-item .answer-info{
 	margin-top: 20px;
