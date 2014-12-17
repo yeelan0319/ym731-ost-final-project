@@ -61,6 +61,7 @@
       <div class="question-detail" id="question-{{ question.key.urlsafe() }}">
         <div class="question-title">
           <h5>{{ question.title }}</h5>
+          <div class="question-rss"><a href="/questions/{{ question.key.urlsafe() }}/rss"><span class="fui-document"></span>RSS</a></div>
         </div>
         <table class="question-content">
           <tr>
@@ -82,7 +83,7 @@
                   <div class="question-author col-xs-4"> - {{ question.author }} <span class="question-utime">{{ question.utime.strftime('%Y-%m-%d %H:%M') }}</span></div>
                 </div>
               <div class="row question-tag">
-                <input name="tagsinput" class="question-tagsinput" data-role="tagsinput" data-content="{{ question.key.urlsafe() }}" value="{{ question.tags or "" }}" />
+                <input name="tagsinput" class="question-tagsinput" data-role="tagsinput" data-content="{{ question.key.urlsafe() }}" value="{{ question.tags or "" }}" style="display:none"/>
               </div>
             </td>
           </tr>

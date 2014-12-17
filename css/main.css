@@ -138,7 +138,13 @@ footer .gh-btn{
 .question-detail, .answers, #create-new-answer{
 	padding: 15px;
 }
+.question-detail .question-title .question-rss{
+	position: absolute;
+	right:0px;
+	top:15px;
+}
 .question-detail .question-title, .answers .answer-title, .answers .answer-item{
+	position:relative;
 	border-bottom: 1px solid #ccc;
 }
 

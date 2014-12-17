@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    {% autoescape true %}
+    <rss version="2.0">
+        <channel>
+            <title>RSS Resource</title>
+            <description>This is the rss feed for question {{ question.title }} </description>
+            <link>http://localhost:8080/questions/{{question.key.urlsafe()}}</link>
+        <item>
+            <title>{{ question.title }}</title>
+            <author>{{ question.author }}</author>
+            <content>{{ question.content }}</content>
+            <createdate>{{ question.ctime.strftime('%Y-%m-%d %H:%M') }}</createdate>
+            <updatedate>{{ question.utime .strftime('%Y-%m-%d %H:%M')}}</updatedate>
+            <vote> {{ question.vote }}</vote>
+            {% for answer in question.answers %}
+                <answer>
+                    <author>{{ answer.author }} </author>
+                    <content> {{ answer.content }} </content>
+                    <vote> {{ answer.vote }}</vote>
+                    <createdate>{{ answer.ctime.strftime('%Y-%m-%d %H:%M') }}</createdate>
+                    <updatedate>{{ answer.utime.strftime('%Y-%m-%d %H:%M') }}</updatedate>
+                </answer>
+            {% endfor %}
+        </item>
+        </channel>
+    </rss>
+    {% endautoescape %}
