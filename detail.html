@@ -3,7 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Quora Application</title>
+    <title>Hao Question</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Loading Bootstrap -->
@@ -24,7 +24,7 @@
     <header>
       <div class="container">
           <div class="col-xs-8">
-              <a href="/"><h3>Quora</h3></a>
+              <a href="/"><h3>Hao Question</h3></a>
           </div>
           {% if user %}
           <div class="col-xs-2">
@@ -76,9 +76,11 @@
               </div>
               <div class="row question-info">
                   <div class="col-xs-8">
+                    {% if user == question.author %}
                     <span class="question-edit" data-toggle="modal" data-target="#edit-question-modal" data-content="{{ question.key.urlsafe() }}">Edit</span>
                     |
                     <span class="question-delete" data-content="{{ question.key.urlsafe() }}">Delete</span>
+                    {% endif %}
                   </div>
                   <div class="question-author col-xs-4"> - {{ question.author }} <span class="question-utime">{{ question.utime.strftime('%Y-%m-%d %H:%M') }}</span></div>
                 </div>
@@ -108,9 +110,11 @@
                 </div>
                 <div class="row answer-info">
                     <div class="col-xs-8">
+                      {% if user == answer.author %}
                       <span class="answer-edit" data-toggle="modal" data-target="#edit-answer-modal" data-content="{{ question.key.urlsafe() }},{{ answer.key.urlsafe() }}">Edit</span>
                       |
                       <span class="answer-delete" data-content="{{ question.key.urlsafe() }},{{ answer.key.urlsafe() }}">Delete</span>
+                      {% endif %}
                     </div>
                     <div class="answer-author col-xs-4"> - {{ answer.author }} <span class="answer-utime">{{ answer.utime.strftime('%Y-%m-%d %H:%M') }}</span></div>
                   </div>
@@ -120,6 +124,7 @@
         </div>
         {% endfor %} 
       </div><!--answers-->
+      {% if user %}
       <div id="create-new-answer">
         <div class="create-answer-title">
           <p>Your Answer</p>
@@ -131,7 +136,9 @@
           </div>
         </div>
       </div><!--create-answer-->
+      {% endif %}
     </div><!-- /.container -->
+    {% if user %}
     <div class="modal fade" id="create-new-question-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -189,6 +196,7 @@
         </div>
       </div>
     </div>
+    {% endif %}
     <footer>
       <div class="container">
         <span>Yiran Mao - Copyright@2014</span>

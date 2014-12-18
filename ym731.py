@@ -18,7 +18,7 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 
 def contentParser(content):
     content = re.sub(r'(http[s]?://)([^\s]*)','<a target="_blank" href="\\1\\2">\\1\\2</a>',content)
-    content = re.sub(r'<a href="(http[s]?://[^\s]*[(.jpg)(.png)(.gif)])">.*</a>', '<img src="\\1" height="300">', content)
+    content = re.sub(r'<a target="_blank" href="(http[s]?://[^\s]*[(.jpg)(.png)(.gif)])">.*</a>', '<img src="\\1" height="300">', content)
     content = content.replace('\n', '<br/>')
     return content
 
