@@ -9,7 +9,9 @@ import jinja2
 import webapp2
 import json
 import re
+import time
 
+BASEURL = "http://localhost:8080"
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
@@ -38,6 +40,12 @@ class Answer(ndb.Model):
     vote = ndb.IntegerProperty(default=0)
     ctime = ndb.DateTimeProperty(auto_now_add=True) #creation time
     utime = ndb.DateTimeProperty(auto_now=True) #update time
+
+class Image(ndb.Model):
+    ifile = ndb.BlobProperty()
+    url = ndb.StringProperty()
+    user = ndb.UserProperty(required=True)
+    ctime = ndb.DateTimeProperty(auto_now_add=True)
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):  #render main page
@@ -71,18 +79,26 @@ class QuestionsHandler(webapp2.RequestHandler):
             }
         }));
     def post(self): #create new question
-        question = Question(author=users.get_current_user(),
-            title=self.request.get('title'),
-            content=self.request.get('content')
-        );
-        questionKey = question.put()
+        if users.get_current_user():
+            question = Question(author=users.get_current_user(),
+                title=self.request.get('title'),
+                content=self.request.get('content')
+            );
+            questionKey = question.put()
 
-        self.response.out.write(json.dumps({
-            'status': 200,
-            'data': {
-                'qid': questionKey.urlsafe()
-            }
-        }));
+            self.response.out.write(json.dumps({
+                'status': 200,
+                'data': {
+                    'qid': questionKey.urlsafe()
+                }
+            }));
+        else:
+            self.response.out.write(json.dumps({
+                'status': 403,
+                'data': {
+                    'message': 'Please login to vote'
+                }
+            }));
 
 class QuestionHandler(webapp2.RequestHandler):
     def get(self, qid):  #fetch single question
@@ -108,45 +124,75 @@ class QuestionHandler(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template('detail.html')
         self.response.write(template.render(template_values))
     def post(self, qid):  #vote single question
-        question = ndb.Key(urlsafe=qid).get()
-        vote_type = self.request.get('type')
-        if vote_type == "up":
-            question.vote = question.vote + 1
-        else: 
-            question.vote = question.vote - 1
-        question.put()
+        if users.get_current_user():
+            question = ndb.Key(urlsafe=qid).get()
+            vote_type = self.request.get('type')
+            if vote_type == "up":
+                question.vote = question.vote + 1
+            else: 
+                question.vote = question.vote - 1
+            question.put()
 
-        self.response.out.write(json.dumps({
-            'status': 200,
-            'data': {
-                'vote': question.vote
-            }
-        }));
+            self.response.out.write(json.dumps({
+                'status': 200,
+                'data': {
+                    'vote': question.vote
+                }
+            }));
+        else:
+            self.response.out.write(json.dumps({
+                'status': 403,
+                'data': {
+                    'message': 'Please login to vote'
+                }
+            }));
     def put(self, qid):   #edit single question
         question = ndb.Key(urlsafe=qid).get()
         editType = self.request.get("type")
         if editType == "tag":
             question.tags = self.request.get("tag")
+            question.put()
+            self.response.out.write(json.dumps({
+                'status': 200,
+                'data': {
+                    'content': contentParser(question.content)
+                }
+            }));
         elif editType == "content":
-            question.title = self.request.get('title')
-            question.content = self.request.get('content')
-        
-        question.put()
+            if users.get_current_user() == question.author:
+                question.title = self.request.get('title')
+                question.content = self.request.get('content')
+                question.put()
+                self.response.out.write(json.dumps({
+                    'status': 200,
+                    'data': {
+                        'content': contentParser(question.content)
+                    }
+                }));
+            else:
+                self.response.out.write(json.dumps({
+                    'status': 401,
+                    'data': {
+                        'message': 'You do not have the authority to edit this question'
+                    }
+                }));
 
-        self.response.out.write(json.dumps({
-            'status': 200,
-            'data': {
-                'content': contentParser(question.content)
-            }
-        }));
     def delete(self, qid):   #delete single question
         question = ndb.Key(urlsafe=qid).get()
-        question.key.delete()
-        self.response.out.write(json.dumps({
-            'status': 200,
-            'data': {
-            }
-        }));
+        if users.get_current_user() == question.author:
+            question.key.delete()
+            self.response.out.write(json.dumps({
+                'status': 200,
+                'data': {
+                }
+            }));
+        else:
+            self.response.out.write(json.dumps({
+                'status': 401,
+                'data': {
+                    'message': 'You do not have the authority to delete this question'
+                }
+            }));
 
 class RssHandler(webapp2.RequestHandler):
     def get(self, qid):
@@ -168,64 +214,128 @@ class RssHandler(webapp2.RequestHandler):
 
 class AnswersHandler(webapp2.RequestHandler):
     def post(self, qid): #create new answer
-        questionKey = ndb.Key(urlsafe=qid)
-        answer = Answer(questionKey=questionKey,
-            author=users.get_current_user(),
-            content=self.request.get('content')
-        );
-        answer.put()
+        if users.get_current_user():
+            questionKey = ndb.Key(urlsafe=qid)
+            answer = Answer(questionKey=questionKey,
+                author=users.get_current_user(),
+                content=self.request.get('content')
+            );
+            answer.put()
 
-        answer.content = contentParser(answer.content)
-        template_values = {
-            'questionKey': questionKey,
-            'answer': answer
-        }
-        template = JINJA_ENVIRONMENT.get_template('answer.html')
-        self.response.out.write(json.dumps({
-            'status': 200,
-            'data': {
-                'content': template.render(template_values)
+            answer.content = contentParser(answer.content)
+            template_values = {
+                'questionKey': questionKey,
+                'answer': answer
             }
-        })); 
+            template = JINJA_ENVIRONMENT.get_template('answer.html')
+            self.response.out.write(json.dumps({
+                'status': 200,
+                'data': {
+                    'content': template.render(template_values)
+                }
+            }));
+        else:
+            self.response.out.write(json.dumps({
+                'status': 403,
+                'data': {
+                    'message': 'Please login to answer'
+                }
+            }));
 
 class AnswerHandler(webapp2.RequestHandler):
     def post(self, qid, aid): #vote for answer
-        answer = ndb.Key(urlsafe=aid).get()
-        vote_type = self.request.get('type')
-        if vote_type == "up":
-            answer.vote = answer.vote + 1
-        else: 
-            answer.vote = answer.vote - 1
-        answer.put()
+        if users.get_current_user():
+            answer = ndb.Key(urlsafe=aid).get()
+            vote_type = self.request.get('type')
+            if vote_type == "up":
+                answer.vote = answer.vote + 1
+            else: 
+                answer.vote = answer.vote - 1
+            answer.put()
 
-        self.response.out.write(json.dumps({
-            'status': 200,
-            'data': {
-                'vote': answer.vote
-            }
-        }));
+            self.response.out.write(json.dumps({
+                'status': 200,
+                'data': {
+                    'vote': answer.vote
+                }
+            }));
+        else:
+            self.response.out.write(json.dumps({
+                'status': 403,
+                'data': {
+                    'message': 'Please login to vote'
+                }
+            }));
     def put(self, qid, aid):  #edit answer
         answer = ndb.Key(urlsafe=aid).get()
-        answer.content = self.request.get('content')
-        answer.put()
+        if users.get_current_user() == answer.author:
+            answer.content = self.request.get('content')
+            answer.put()
 
-        self.response.out.write(json.dumps({
-            'status': 200,
-            'data': {
-                'content': contentParser(answer.content)
-            }
-        }));
+            self.response.out.write(json.dumps({
+                'status': 200,
+                'data': {
+                    'content': contentParser(answer.content)
+                }
+            }));
+        else:
+            self.response.out.write(json.dumps({
+                'status': 401,
+                'data': {
+                    'message': 'You do not have the authority to edit this answer'
+                }
+            }));
     def delete(self, qid, aid):  #delete answer
         answer = ndb.Key(urlsafe=aid).get()
-        answer.key.delete()
-        self.response.out.write(json.dumps({
-            'status': 200,
-            'data': {
-            }
-        }));
+        if users.get_current_user() == answer.author:
+            answer.key.delete()
+            self.response.out.write(json.dumps({
+                'status': 200,
+                'data': {
+                }
+            }));
+        else:
+            self.response.out.write(json.dumps({
+                'status': 401,
+                'data': {
+                    'message': 'You do not have the authority to delete this answer'
+                }
+            }));
+
+class ImagesHandler(webapp2.RequestHandler):
+    def get(self):
+        if users.get_current_user():
+            url = users.create_logout_url(self.request.uri)
+        else:
+            url = users.create_login_url(self.request.uri)
+        images = Image.query(Image.user==users.get_current_user()).order(-Image.ctime)
+        template_values = {
+            'user': users.get_current_user(),
+            'url': url,
+            'images': images,
+            'baseUrl': BASEURL
+        }
+        template = JINJA_ENVIRONMENT.get_template('images.html')
+        self.response.write(template.render(template_values))
+    def post(self):
+        if users.get_current_user():
+            image = Image()
+            image.ifile = self.request.get('img')
+            image.user = users.get_current_user()
+            image.put()
+            time.sleep(1)
+            self.redirect('/images')
+
+class ImageHandler(webapp2.RequestHandler):
+    def get(self, iid):
+        image = ndb.Key(urlsafe=iid).get()
+        self.response.headers['content-Type'] = 'image/png'
+        self.response.write(image.ifile)
 
 application = webapp2.WSGIApplication([
     (r'/', MainHandler),
+    (r'/images', ImagesHandler),
+    (r'/images/([^/]+)?', ImageHandler),
     (r'/questions', QuestionsHandler),
     (r'/questions/([^/]+)?', QuestionHandler),
     (r'/questions/([^/]+)?/rss', RssHandler),

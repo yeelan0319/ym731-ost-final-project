@@ -21,3 +21,9 @@ indexes:
   properties:
   - name: date
     direction: desc
+
+- kind: Image
+  properties:
+  - name: user
+  - name: ctime
+    direction: desc
