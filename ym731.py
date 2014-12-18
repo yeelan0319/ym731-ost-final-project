@@ -194,23 +194,23 @@ class QuestionHandler(webapp2.RequestHandler):
                 }
             }));
 
-class RssHandler(webapp2.RequestHandler):
-    def get(self, qid):
-        questionKey = ndb.Key(urlsafe=qid)
-        question = questionKey.get()
-        question.content = question.content
+# class RssHandler(webapp2.RequestHandler):
+#     def get(self, qid):
+#         questionKey = ndb.Key(urlsafe=qid)
+#         question = questionKey.get()
+#         question.content = question.content
 
-        answers = Answer.query(Answer.questionKey == questionKey).order(-Answer.vote)
-        for answer in answers :
-            answer.content = answer.content
-        question.answers = answers
+#         answers = Answer.query(Answer.questionKey == questionKey).order(-Answer.vote)
+#         for answer in answers :
+#             answer.content = answer.content
+#         question.answers = answers
 
-        template_value = {
-            'question' : question,
-        }
-        self.response.headers['Content-Type'] = 'text/xml'
-        template = JINJA_ENVIRONMENT.get_template('rss.xml')
-        self.response.write(template.render(template_value))
+#         template_value = {
+#             'question' : question,
+#         }
+#         self.response.headers['Content-Type'] = 'text/xml'
+#         template = JINJA_ENVIRONMENT.get_template('rss.xml')
+#         self.response.write(template.render(template_value))
 
 class AnswersHandler(webapp2.RequestHandler):
     def post(self, qid): #create new answer
@@ -338,7 +338,7 @@ application = webapp2.WSGIApplication([
     (r'/images/([^/]+)?', ImageHandler),
     (r'/questions', QuestionsHandler),
     (r'/questions/([^/]+)?', QuestionHandler),
-    (r'/questions/([^/]+)?/rss', RssHandler),
+    #(r'/questions/([^/]+)?/rss', RssHandler),
     (r'/questions/([^/]+)?/answers', AnswersHandler),
     (r'/questions/([^/]+)?/answers/([^/]+)?', AnswerHandler),
 ], debug=True)
