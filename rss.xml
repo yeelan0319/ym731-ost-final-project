@@ -4,7 +4,7 @@
         <channel>
             <title>RSS Resource</title>
             <description>This is the rss feed for question {{ question.title }} </description>
-            <link>http://localhost:8080/questions/{{question.key.urlsafe()}}</link>
+            <link>http://hao-question.appspot.com/questions/{{question.key.urlsafe()}}</link>
         <item>
             <title>{{ question.title }}</title>
             <author>{{ question.author }}</author>

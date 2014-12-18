@@ -45,7 +45,7 @@ $(document).ready(function(){
 				data = JSON.parse(data);
 				if(data.status == 200){  //which means it success
 					var qid = data.data.qid;
-					var link = "http://localhost:8080/questions/" + qid;
+					var link = "http://hao-question.appspot.com/questions/" + qid;
 					var atag = modal.find(".result-view a");
 					atag.attr("href", link);
 					atag.text(link);
