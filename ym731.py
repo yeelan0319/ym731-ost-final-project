@@ -11,7 +11,7 @@ import json
 import re
 import time
 
-BASEURL = "http://localhost:8080"
+BASEURL = "http://hao-question.appspot.com"
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
